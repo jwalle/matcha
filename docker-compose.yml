@@ -1,0 +1,29 @@
+version: '2'
+services:
+    php-matcha:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - "8080:80"
+        volumes:
+            - "./src:/var/www/html"
+
+
+
+
+
+
+    # image: php:apache
+    # environment:
+    # - COMPOSE_CONVERT_WINDOWS_PATHS=1
+    # volumes: 
+    # - /H/http/camagru/:/var/www/html:rw
+#    links:
+ #   - mysql
+    # privileged: true
+
+# mysql:
+#     image: mysql:latest
+#     environment:
+#         MYSQL_ROOT_PASSWORD: root
