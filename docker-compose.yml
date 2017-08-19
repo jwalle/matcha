@@ -1,23 +1,28 @@
-version: '2'
-services:
-    mysql-matcha:
-        image: mysql
-        ports:
-            - "33060:3306"
-        environment:
-            MYSQL_ROOT_PASSWORD: root
-            MYSQL_USER: root
-            MYSQL_PASSWORD: root
-            MYSQL_DATABASE: db_matcha
-    php-matcha:
-        build:
-            context: .
-            dockerfile: Dockerfile
-        depends_on :
-            - mysql-matcha
-        links :
-            - mysql-matcha:mysql-matcha
-        ports:
-            - "8080:80"
-        volumes:
-            - "./src:/var/www/html"
+mysql:
+    image: mysql
+    environment:
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_USER: jwalle
+        MYSQL_PASSWORD: root
+        MYSQL_DATABASE: db_matcha
+    ports: 
+        - 3306
+phpmyadmin:
+    image:  phpmyadmin/phpmyadmin
+    links:
+        - mysql
+    environment:
+        PMA_HOST: mysql
+        PMA_PORT: 3306
+    ports:
+        - '8080:80'
+php:
+    build : .
+    volumes:
+        - "./src:/var/www/html"
+        - "./conf:/etc/apache2/sites-available"
+    ports:
+        - '80:80'
+    links:
+        - mysql
+    tty: true
